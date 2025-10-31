@@ -1,0 +1,26 @@
+name: rag cicd
+ 
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+
+  deploy:
+   runs-on:ubuntu-latest
+   steps:
+      -name: checkout code
+       uses: actions/chcekout@v3
+     -name: set up terraform
+      uses: hashicorp/setup-terraform@v2
+     -name: terraform Init & apply 
+      run: |
+            cd terraform
+            terraform init
+            terraform apply -auto-approve 
+
+    -name: Deploy helm chart
+     run: |
+           helm upgrade--install rag-first./heml/rag-first--namespace rag-kk
+     
